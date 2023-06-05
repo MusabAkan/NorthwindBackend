@@ -12,6 +12,5 @@ namespace Business.Contants
         public static string ProductDeleted = "Ürün başarıyla silindi";
         public static string ProductUpdated = "Ürün başarıyla güncellendi";
 
-
     }
 }
