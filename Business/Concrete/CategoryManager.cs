@@ -21,15 +21,15 @@ namespace Business.Concrete
             _categoryDal = categoryDal;
         }
 
-        public IResult Add(Category product)
+        public IResult Add(Category category)
         {
-            _categoryDal.Add(product);
+            _categoryDal.Add(category);
             return new SuccessResult(Messages.CategoryAdded);
         }
 
-        public IResult Delete(Category product)
+        public IResult Delete(Category category)
         {
-            _categoryDal.Delete(product);
+            _categoryDal.Delete(category);
             return new SuccessResult(Messages.CategoryDeleted);
         }
 

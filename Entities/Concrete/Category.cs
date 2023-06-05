@@ -6,6 +6,6 @@ namespace Entities.Concrete
     {
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
-        public int Description { get; set; }        
+        public string Description { get; set; }        
     }
 }
