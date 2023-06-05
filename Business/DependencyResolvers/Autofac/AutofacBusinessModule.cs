@@ -12,7 +12,10 @@ namespace Business.DependencyResolvers.Autofac
         {
             builder.RegisterType<ProductManager>().As<IProductService>();
             builder.RegisterType<EfProductDal>().As<IProductDal>();
-             //web api konfigrasyonların yapıldığı yerdir.
+            builder.RegisterType<CategoryManager>().As<ICategoryService>();
+            builder.RegisterType<EfCategoryDal>().As<ICategoryDal>();
+
+            //web api konfigrasyonların yapıldığı yerdir.
         }
     }
 }
