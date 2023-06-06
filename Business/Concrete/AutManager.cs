@@ -30,7 +30,7 @@ namespace Business.Concrete
         {
             var userToCheck = _usersService.GetByMail(userForLoginDto.Email);
 
-            if (userToCheck == null)
+            if (userToCheck is null)
                 return new ErrorDataResult<User>(Messages.UserNotFound);
 
             if (!HashingHelper.VerifyPassswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
@@ -63,7 +63,7 @@ namespace Business.Concrete
         {
             //kullanıcın var olup olmadığı kontrolleri sağlandığı yerdir.
 
-            if (_usersService.GetByMail(email) != null)
+            if (_usersService.GetByMail(email) is not null)
             {
                 return new ErrorResult(Messages.UserAlreadyExists);
             }
