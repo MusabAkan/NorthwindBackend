@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core.Utilities.Security.Encyption
 {
-    internal class SecurityKeyHelper
+    public class SecurityKeyHelper
     {
         public static SecurityKey CreateSecurityKey(string securityKey) => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
     }

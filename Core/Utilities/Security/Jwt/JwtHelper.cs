@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.ExceptionServices;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using Core.Entities.Concrete;
 using Core.Extensions;
 using Core.Utilities.Security.Encyption;
@@ -18,9 +14,9 @@ namespace Core.Utilities.Security.Jwt
         readonly TokenOptions _tokenOptions;
         readonly DateTime _accessTokenExpiration;
         public JwtHelper(IConfiguration configuration)
-        {
-            Configuration = configuration;
-            _tokenOptions = (TokenOptions)Configuration.GetSection("TokenOptions");
+        {            
+            Configuration = configuration;          
+            _tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
             _accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
         }
 

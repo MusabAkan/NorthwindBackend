@@ -9,6 +9,11 @@ namespace Core.Utilities.Security.Encyption
 {
     public class SigningCredentialsHelper
     {
-        public static SigningCredentials CreateSigningCredentials(SecurityKey securityKey) => new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+        /// <summary>
+        /// securtiy 512 (16 bit)
+        /// </summary>
+        /// <param name="securityKey"></param>
+        /// <returns></returns>
+        public static SigningCredentials CreateSigningCredentials(SecurityKey securityKey) => new(securityKey, SecurityAlgorithms.HmacSha256Signature);
     }
 }

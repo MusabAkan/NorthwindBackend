@@ -2,12 +2,17 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Business.DependencyResolvers.Autofac;
-using Microsoft.AspNetCore.Hosting;
+using Core.Utilities.Link;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Core.Utilities.Security.Jwt;
+using Core.Utilities.Security.Encyption;
 
 namespace WebAPI
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +24,31 @@ namespace WebAPI
             });
 
             builder.Services.AddControllers();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrig", builder =>
+                builder.WithOrigins(AddressHelper.LocalAPI));
+            });
+
+            var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = tokenOptions.Issuer,
+                        ValidAudience = tokenOptions.Audience,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey),
+
+
+                    };
+                });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -32,14 +62,18 @@ namespace WebAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseCors(builder => builder.WithOrigins(AddressHelper.LocalAPI).AllowAnyHeader());
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
+            app.UseAuthentication();
 
             app.MapControllers();
 
             app.Run();
         }
+
     }
 }
