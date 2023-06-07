@@ -1,11 +1,15 @@
 ﻿using Business.Abstract;
 using Business.Contants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,23 +24,16 @@ namespace Business.Concrete
         {
             _productDal = productDal;
         }
+        //Cross Cutting Concers Validation, Cache, Log, Performance, Auth, Transaction
+        //AOP - Aspect Oriented Programing(yazılım geliştirme yaklaşımıdır.)
+
+        [ValidationAspect(typeof(ProductValidator), Priortiy = 1)]
+        //[ValidationAspect(typeof(ProductValidator), Priortiy = 2)]
 
         public IResult Add(Product product)
         {
-            //Business code
-            // sadece örnek olsun diye yazdım
-            //magic stringden kurtulmak
-            try
-            {
-                _productDal.Add(product);
-                return new SuccessResult(Messages.ProductAdded);
-            }
-            catch (Exception ex)
-            {
-                return new ErrorResult("Hata : " + ex.Message);
-            }
-
-
+            _productDal.Add(product);
+            return new SuccessResult(Messages.ProductAdded);
         }
 
         public IResult Delete(Product product)

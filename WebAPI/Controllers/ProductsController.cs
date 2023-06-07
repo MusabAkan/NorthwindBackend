@@ -34,6 +34,7 @@ namespace WebAPI.Controllers
             var result = _productService.GetById(productId);
             return result.Success ? Ok(result.Data) : BadRequest(result.Message);
         }
+
         [HttpPost("add")]
         public IActionResult Add(Product product)
         {
