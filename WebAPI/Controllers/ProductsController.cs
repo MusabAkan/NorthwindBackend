@@ -47,6 +47,14 @@ namespace WebAPI.Controllers
             var result = _productService.Update(product);
             return result.Success ? Ok(result) : BadRequest(result.Message);
         }
+        [HttpPost("transactional")]
+        public IActionResult TransactionTest (Product product)
+        {
+            var result = _productService.TransactionalOperation(product);
+            return result.Success ? Ok(result) : BadRequest(result.Message);
+
+        }
+
         [HttpPost("delete")]
         public IActionResult Delete(Product product)
         {

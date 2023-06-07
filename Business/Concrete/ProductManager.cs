@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Contants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
@@ -28,6 +30,9 @@ namespace Business.Concrete
         //AOP - Aspect Oriented Programing(yazılım geliştirme yaklaşımıdır.)
 
         [ValidationAspect(typeof(ProductValidator), Priortiy = 1)]
+        [CacheRemoveAspect("IProductService.Get")]
+        //[CacheRemoveAspect("ICategoryService.Get")]
+
         //[ValidationAspect(typeof(ProductValidator), Priortiy = 2)]
 
         public IResult Add(Product product)
@@ -51,10 +56,19 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetList().ToList());
         }
-
+        [CacheAspect(duration:10)]
         public IDataResult<List<Product>> GetListByCategory(int categoryId)
         {
-            return new SuccessDataResult<List<Product>>(_productDal.GetList().Where(p => p.ProductID == categoryId).ToList());
+            return new SuccessDataResult<List<Product>>(_productDal.GetList().Where(p => p.CategoryID == categoryId).ToList());
+        }
+       
+        [TransactionScopeAspect]
+        public IResult TransactionalOperation(Product product)
+        {
+            //burada yapılma amaç işlem hata alındığın database aktarılan veriyi geri alınsın.
+            _productDal.Update(product);
+            //_productDal.Add(product);
+            return new SuccessResult(Messages.ProductUpdated);
         }
 
         public IResult Update(Product product)

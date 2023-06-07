@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Core.Utilities.Security.Jwt;
 using Core.Utilities.Security.Encyption;
+using Core.Extensions;
+using Core.DependencyResolvers;
 
 namespace WebAPI
 {
@@ -22,7 +24,7 @@ namespace WebAPI
             {
                 builder.RegisterModule(new AutofacBusinessModule());
             });
-
+            builder.Services.AddMemoryCache();
             builder.Services.AddControllers();
 
             builder.Services.AddCors(options =>
@@ -49,6 +51,10 @@ namespace WebAPI
 
                     };
                 });
+            builder.Services.AddDepencdencyResolvers(new Core.Utilities.loC.ICoreModule[] { 
+                new CoreModule()
+            });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
