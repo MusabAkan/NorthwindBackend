@@ -44,7 +44,7 @@ namespace Business.Concrete
         {
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
-            User users = new User
+            User users = new()
             {
                 Email = userForRegisterDto.Email,
                 FirstName = userForRegisterDto.FirstName,

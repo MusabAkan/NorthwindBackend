@@ -24,7 +24,7 @@ namespace WebAPI
             {
                 builder.RegisterModule(new AutofacBusinessModule());
             });
-            builder.Services.AddMemoryCache();
+            //builder.Services.AddMemoryCache();
             builder.Services.AddControllers();
 
             builder.Services.AddCors(options =>
