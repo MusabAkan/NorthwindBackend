@@ -14,8 +14,8 @@ namespace Core.Utilities.Security.Jwt
         readonly TokenOptions _tokenOptions;
         readonly DateTime _accessTokenExpiration;
         public JwtHelper(IConfiguration configuration)
-        {            
-            Configuration = configuration;          
+        {
+            Configuration = configuration;
             _tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
             _accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
         }

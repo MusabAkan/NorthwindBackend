@@ -25,6 +25,7 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net.Layouts
                     PreserveReferencesHandling = PreserveReferencesHandling.Objects
                 });
 
+            //todo Hata : Newtonsoft.Json.JsonSerializationException: 'Self referencing loop detected for property 'ManifestModule' with type 'System.Reflection.RuntimeModule'. Path 'Message.MethodInvocationTarget.Module.Assembly'.'
             writer.WriteLine(json);
 
         }
