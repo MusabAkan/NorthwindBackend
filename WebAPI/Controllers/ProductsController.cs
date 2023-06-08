@@ -17,8 +17,7 @@ namespace WebAPI.Controllers
         }
         [HttpGet("getall")]        
         public IActionResult GetList()
-        {
-           
+        {           
             var result = _productService.GetList();
             return result.Success ? Ok(result.Data) : BadRequest(result.Message);
         }

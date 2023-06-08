@@ -1,4 +1,5 @@
 ﻿using log4net;
+using log4net.Core;
 using log4net.Repository;
 using System.Reflection;
 using System.Xml;
@@ -29,6 +30,7 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net
         public bool IsWarnEnabled => _log.IsWarnEnabled;
         public bool IsFatalEnabled => _log.IsFatalEnabled;
         public bool IsErrorEnabled => _log.IsErrorEnabled;
+      
 
 
 
@@ -51,6 +53,11 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net
         {
             if (IsFatalEnabled)
                 _log.Fatal(logMessage);
+        }
+        public void Error(object logMessage)
+        {
+            if (IsErrorEnabled)
+                _log.Error(logMessage);
         }
     }
 }

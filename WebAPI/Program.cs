@@ -26,7 +26,7 @@ namespace WebAPI
             });
             //builder.Services.AddMemoryCache();
             builder.Services.AddControllers();
-
+           
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowOrig", builder =>
@@ -67,6 +67,8 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.ConfigureCustomExceptionMiddleware();
 
             app.UseCors(builder => builder.WithOrigins(AddressHelper.LocalAPI).AllowAnyHeader());
 
