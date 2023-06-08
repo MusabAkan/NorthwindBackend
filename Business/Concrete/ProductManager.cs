@@ -6,6 +6,7 @@ using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Logger;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -29,11 +30,24 @@ namespace Business.Concrete
         //[CacheRemoveAspect("ICategoryService.Get")]
 
         //[ValidationAspect(typeof(ProductValidator), Priortiy = 2)]
-        
+
         public IResult Add(Product product)
         {
+            IResult result = BusinessRules.Run(CheckIfProductNameExists(product.ProductName));
+
+            if (result is not null)
+                return result;
+
             _productDal.Add(product);
+
             return new SuccessResult(Messages.ProductAdded);
+        }
+
+        IResult CheckIfProductNameExists(string productName)
+        {
+            if (_productDal.Get(p=>p.ProductName == productName) is not  null)
+                return new ErrorResult(Messages.ProductNameAlreadyExists);
+            return new SuccessResult();
         }
 
         public IResult Delete(Product product)
@@ -44,7 +58,6 @@ namespace Business.Concrete
 
         public IDataResult<Product> GetById(int productId)
         {
-
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductID == productId));
         }
         [PerformanceAspect(5)]
@@ -54,7 +67,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetList().ToList());
         }
         //[SecuredOperation("Product.List,Admim")]
-       //[CacheAspect(duration:10)]
+        //[CacheAspect(duration:10)]
         //[LogAspect(typeof(FileLogger))]
         [LogAspect(typeof(DatabaseLogger))]
 
@@ -62,7 +75,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetList().Where(p => p.CategoryID == categoryId).ToList());
         }
-       
+
         [TransactionScopeAspect]
         public IResult TransactionalOperation(Product product)
         {

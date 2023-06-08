@@ -26,5 +26,7 @@ namespace Business.Contants
         public static string AccessTokenCreated = "Access Token başarıyla oluşturuldu";
 
         public static string AuthorizationDenied = "Yetkiniz Yok";
+
+        public static string ProductNameAlreadyExists = "Ürün İsmi Zaten Mevcut !!";
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Reflection.Metadata;
@@ -26,18 +27,24 @@ namespace Core.Extensions
             }
             catch (Exception e)
             {
-                await HandleExceptionAsync(httpContext, e);                
+                await HandleExceptionAsync(httpContext, e);
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext httpContext, object e)
+        private Task HandleExceptionAsync(HttpContext httpContext, Exception e)
         {
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+            string message = "Internal Server Error";
+
+            if (e.GetType().Equals(typeof(ValidationException)))
+                message = e.Message;
+
             return httpContext.Response.WriteAsync(new ErrorDetails()
             {
                 StatusCode = httpContext.Response.StatusCode,
-                Message = "Interval Server Error"
+                Message = message
 
             }.ToString());
         }
